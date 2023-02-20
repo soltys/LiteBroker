@@ -1,9 +1,14 @@
 ﻿
 #include "main.h"
-#include "brokerLib.h"
+#include "broker.h"
 using namespace std;
 int main()
 {
-	brokerLib_init();
+	Broker* broker = nullptr;
+	broker_initialize(&broker);
+
+	broker_send(broker, "MyCppQueue", "{}");
+
+	broker_destroy(broker);
 	return 0;
 }

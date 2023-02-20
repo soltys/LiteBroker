@@ -1,0 +1,1 @@
+INSERT INTO Task VALUES ($Id, $Payload, 0, $Created, $Queue);

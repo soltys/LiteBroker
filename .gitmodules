@@ -1,0 +1,6 @@
+[submodule "thirdparty/SQLiteCpp"]
+	path = thirdparty/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp
+[submodule "tools/embed-resource"]
+	path = tools/embed-resource
+	url = https://github.com/soltys/embed-resource
