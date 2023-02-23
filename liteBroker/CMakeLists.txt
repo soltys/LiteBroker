@@ -1,5 +1,5 @@
 
-set(EMBEDED_FILES "schema.sql" "create_task.sql")
+set(EMBEDED_FILES "schema.sql" "create_task.sql" "receive_tasks.sql" "task_set_status.sql")
 embed_resources(liteBrokerRes ${EMBEDED_FILES})
 add_custom_target(liteBrokerResources SOURCES ${EMBEDED_FILES})
 source_group("EmbededFiles" REGULAR_EXPRESSION ".*sql.hpp$")

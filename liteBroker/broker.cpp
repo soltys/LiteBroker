@@ -1,22 +1,31 @@
 #define BROKER_EXPORT
 
 #include "include/broker.h"
+
 #include "schema.sql.hpp"
 #include "create_task.sql.hpp"
+#include "receive_tasks.sql.hpp"
+#include "task_set_status.sql.hpp"
+
 #include <iostream>
 #include "uuid_v4.h"
 
 static long long get_timestamp_milliseconds();
 
+Task::Task(std::string id, std::string payload, const int status, const long long created, std::string queue): id(std::move(id)),
+	payload(std::move(payload)),
+	status(status),
+	created(created),
+	queue(std::move(queue))
+{
+}
+
 BrokerResult broker_initialize(Broker** new_broker)
 {
-	std::cout << "broker_initialize()" << std::endl;
-	std::cout << SQLite::getLibVersion() << std::endl;
-
 	*new_broker = nullptr;
 	try
 	{
-		auto *db = new SQLite::Database("broker.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		auto* db = new SQLite::Database("broker.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		*new_broker = new Broker(db);
 
 		auto schema_resource = LOAD_RESOURCE(schema_sql);
@@ -28,10 +37,8 @@ BrokerResult broker_initialize(Broker** new_broker)
 	{
 		std::cout << e.getErrorCode() << std::endl;
 		std::cout << e.getErrorStr() << std::endl;
-		return BrokerResult::FAILED;		
+		return BrokerResult::FAILED;
 	}
-
-	std::cout << "/broker_initialize()" << std::endl;
 
 	return BrokerResult::OK;
 }
@@ -43,7 +50,6 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 	UUIDv4::UUIDGenerator<std::mt19937_64> uuid_generator;
 	const auto uuid = uuid_generator.getUUID();
 
-	SQLite::Transaction transaction(*db);
 	const auto create_task_resource = LOAD_RESOURCE(create_task_sql);
 	SQLite::Statement stmt(*db, create_task_resource.data());
 
@@ -53,8 +59,7 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 	stmt.bind("$Queue", queue);
 
 	stmt.exec();
-
-	transaction.commit();
+	
 	return BrokerResult::OK;
 }
 
@@ -63,10 +68,69 @@ long long get_timestamp_milliseconds() {
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
+BrokerResult broker_receive(const Broker* broker, MessageCollection** collection)
+{
+	auto db = broker->get_db();
+
+	const auto receive_tasks_resource = LOAD_RESOURCE(receive_tasks_sql);
+	try
+	{
+		SQLite::Statement stmt(*db, receive_tasks_resource.data());
+		std::vector<Task> tasks;
+		while (stmt.executeStep())
+		{
+			Task task(
+				stmt.getColumn("Id"),
+				stmt.getColumn("Payload"),
+				stmt.getColumn("Status"),
+				stmt.getColumn("Created"),
+				stmt.getColumn("Queue"));
+			tasks.push_back(task);
+		}
+		*collection = new MessageCollection(std::move(tasks));
+	}
+	catch (SQLite::Exception e)
+	{
+		std::cout << "exception: " << e.what() << std::endl;
+		return BrokerResult::FAILED;
+	}	
+
+	return BrokerResult::OK;
+}
+
+
+BrokerResult broker_finalize(const MessageCollection* collection)
+{
+	delete collection;
+
+	return BrokerResult::OK;
+}
+
+
+BrokerResult broker_set_status(const Broker* broker, const char* id, int status)
+{
+	auto db = broker->get_db();
+
+	const auto task_set_status_resource = LOAD_RESOURCE(task_set_status_sql);
+	try
+	{
+		SQLite::Statement stmt(*db, task_set_status_resource.data());
+		stmt.bind("$Id", id);
+		stmt.bind("$Status", status);
+		stmt.exec();
+	}
+	catch (SQLite::Exception e)
+	{
+		std::cout << "exception: " << e.what() << std::endl;
+		return BrokerResult::FAILED;
+	}
+
+	return BrokerResult::OK;
+}
+
+
 BrokerResult broker_destroy(const Broker* broker)
 {
-	std::cout << "broker_destroy()" << std::endl;
 	delete broker;
-	std::cout << "/broker_destroy()" << std::endl;
 	return  BrokerResult::OK;
 }

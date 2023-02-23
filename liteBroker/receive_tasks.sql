@@ -1,0 +1,1 @@
+SELECT Id, Payload, Status, Created, Queue FROM Task WHERE Status = 0 ORDER BY Created
