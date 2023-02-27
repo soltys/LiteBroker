@@ -134,3 +134,9 @@ BrokerResult broker_destroy(const Broker* broker)
 	delete broker;
 	return  BrokerResult::OK;
 }
+
+
+const char* broker_version()
+{
+	return "2.1.3.7";
+}

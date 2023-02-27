@@ -90,4 +90,5 @@ BROKER_API BrokerResult broker_receive(const Broker* broker, MessageCollection**
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);
 BROKER_API BrokerResult broker_destroy(const Broker* broker);
+BROKER_API const char* broker_version();
 
