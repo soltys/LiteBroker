@@ -12,11 +12,11 @@
 
 static long long get_timestamp_milliseconds();
 
-Task::Task(std::string id, std::string payload, const int status, const long long created, std::string queue): id(std::move(id)),
-	payload(std::move(payload)),
-	status(status),
-	created(created),
-	queue(std::move(queue))
+Task::Task(std::string id, std::string payload, const int status, const long long created, std::string queue) : id(std::move(id)),
+payload(std::move(payload)),
+status(status),
+created(created),
+queue(std::move(queue))
 {
 }
 
@@ -59,7 +59,7 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 	stmt.bind("$Queue", queue);
 
 	stmt.exec();
-	
+
 	return BrokerResult::OK;
 }
 
@@ -93,7 +93,7 @@ BrokerResult broker_receive(const Broker* broker, MessageCollection** collection
 	{
 		std::cout << "exception: " << e.what() << std::endl;
 		return BrokerResult::FAILED;
-	}	
+	}
 
 	return BrokerResult::OK;
 }
@@ -135,8 +135,33 @@ BrokerResult broker_destroy(const Broker* broker)
 	return  BrokerResult::OK;
 }
 
+int broker_task_count(const MessageCollection* collection)
+{
+	return collection->get_tasks().size();
+}
+
+Task* broker_task_at(const MessageCollection* collection, const int index)
+{
+	return &collection->get_tasks().at(index);
+}
+
+const char* broker_task_get_id(const Task* task)
+{
+	return task->get_id().c_str();
+}
+
+const char* broker_task_get_payload(const Task* task)
+{
+	return task->get_payload().c_str();
+}
+
+const char* broker_task_get_queue(const Task* task)
+{
+	return task->get_queue().c_str();
+}
+
 
 const char* broker_version()
 {
-	return "2.1.3.7";
+	return "0.0.5.0";
 }

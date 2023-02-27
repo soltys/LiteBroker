@@ -53,8 +53,10 @@ public:
 	Task(std::string id, std::string payload, const int status, const long long created,
 	     std::string queue);
 
-	std::string& get_id() { return id; }
-	std::string& get_queue() { return queue; }
+	const std::string& get_id() const { return id; }
+	const std::string& get_queue() const { return queue; }
+	const std::string& get_payload() const { return payload; }
+
 private:
 	std::string id;
 	std::string payload;
@@ -87,6 +89,13 @@ private:
 BROKER_API BrokerResult broker_initialize(Broker** broker);
 BROKER_API BrokerResult broker_send(const Broker* broker, const char* queue, const char* payload);
 BROKER_API BrokerResult broker_receive(const Broker* broker, MessageCollection** collection);
+
+BROKER_API int broker_task_count(const MessageCollection* collection);
+BROKER_API Task* broker_task_at(MessageCollection* collection, int index);
+BROKER_API const char* broker_task_get_id(Task* task);
+BROKER_API const char* broker_task_get_payload(Task* task);
+BROKER_API const char* broker_task_get_queue(Task* task);
+
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);
 BROKER_API BrokerResult broker_destroy(const Broker* broker);
