@@ -160,12 +160,12 @@ const char* broker_task_get_queue(const Task* task)
 	return task->get_queue().c_str();
 }
 
-BROKER_API const char* broker_task_get_created(const Task* task)
+const char* broker_task_get_created(const Task* task)
 {
 	return task->get_created().c_str();
 }
 
-BROKER_API int broker_task_get_status(const Task* task)
+int broker_task_get_status(const Task* task)
 {
 	return task->get_status();
 }
@@ -173,5 +173,5 @@ BROKER_API int broker_task_get_status(const Task* task)
 
 const char* broker_version()
 {
-	return "0.0.8";
+	return "0.0.9";
 }
