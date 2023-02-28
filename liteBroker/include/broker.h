@@ -52,18 +52,19 @@ typedef enum  BROKER_CLASS_EXPORT  {
 class Task
 {
 public:
-	Task(std::string id, std::string payload, const int status, const long long created,
+	Task(std::string id, std::string payload, const int status, std::string created,
 	     std::string queue);
 
 	const std::string& get_id() const { return id; }
 	const std::string& get_queue() const { return queue; }
 	const std::string& get_payload() const { return payload; }
-
+	const int& get_status() const { return status; }
+	const std::string& get_created() const { return created; }
 private:
 	std::string id;
 	std::string payload;
 	int status;
-	long long created;
+	std::string created;
 	std::string queue;
 };
 
@@ -97,6 +98,8 @@ BROKER_API Task* broker_task_at(const MessageCollection* collection, int index);
 BROKER_API const char* broker_task_get_id(const Task* task);
 BROKER_API const char* broker_task_get_payload(const Task* task);
 BROKER_API const char* broker_task_get_queue(const Task* task);
+BROKER_API const char* broker_task_get_created(const Task* task);
+BROKER_API int broker_task_get_status(const Task* task);
 
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);

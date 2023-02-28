@@ -12,10 +12,10 @@
 
 static long long get_timestamp_milliseconds();
 
-Task::Task(std::string id, std::string payload, const int status, const long long created, std::string queue) : id(std::move(id)),
+Task::Task(std::string id, std::string payload, const int status, const std::string created, std::string queue) : id(std::move(id)),
 payload(std::move(payload)),
 status(status),
-created(created),
+created(std::move(created)),
 queue(std::move(queue))
 {
 }
@@ -160,8 +160,18 @@ const char* broker_task_get_queue(const Task* task)
 	return task->get_queue().c_str();
 }
 
+BROKER_API const char* broker_task_get_created(const Task* task)
+{
+	return task->get_created().c_str();
+}
+
+BROKER_API int broker_task_get_status(const Task* task)
+{
+	return task->get_status();
+}
+
 
 const char* broker_version()
 {
-	return "0.0.7.0";
+	return "0.0.8";
 }
