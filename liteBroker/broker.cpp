@@ -135,7 +135,7 @@ BrokerResult broker_destroy(const Broker* broker)
 	return  BrokerResult::OK;
 }
 
-int broker_task_count(const MessageCollection* collection)
+size_t broker_task_count(const MessageCollection* collection)
 {
 	return collection->get_tasks().size();
 }
@@ -163,5 +163,5 @@ const char* broker_task_get_queue(const Task* task)
 
 const char* broker_version()
 {
-	return "0.0.5.0";
+	return "0.0.7.0";
 }

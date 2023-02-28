@@ -8,8 +8,10 @@
 
 #ifdef BROKER_EXPORT
 #define BROKER_API extern "C" __declspec(dllexport)
+#define BROKER_CLASS_EXPORT __declspec(dllexport)
 #else
 #define BROKER_API extern "C"  __declspec(dllimport)
+#define BROKER_CLASS_EXPORT
 #endif
 
 #else
@@ -17,7 +19,7 @@
 #define BROKER_API 
 
 #endif
-class Broker
+class BROKER_CLASS_EXPORT Broker
 {
 	SQLite::Database* db;
 
@@ -42,7 +44,7 @@ public:
 	}
 };
 
-typedef enum {
+typedef enum  BROKER_CLASS_EXPORT  {
 	OK,
 	FAILED,
 } BrokerResult;
@@ -90,11 +92,11 @@ BROKER_API BrokerResult broker_initialize(Broker** broker);
 BROKER_API BrokerResult broker_send(const Broker* broker, const char* queue, const char* payload);
 BROKER_API BrokerResult broker_receive(const Broker* broker, MessageCollection** collection);
 
-BROKER_API int broker_task_count(const MessageCollection* collection);
-BROKER_API Task* broker_task_at(MessageCollection* collection, int index);
-BROKER_API const char* broker_task_get_id(Task* task);
-BROKER_API const char* broker_task_get_payload(Task* task);
-BROKER_API const char* broker_task_get_queue(Task* task);
+BROKER_API size_t broker_task_count(const MessageCollection* collection);
+BROKER_API Task* broker_task_at(const MessageCollection* collection, int index);
+BROKER_API const char* broker_task_get_id(const Task* task);
+BROKER_API const char* broker_task_get_payload(const Task* task);
+BROKER_API const char* broker_task_get_queue(const Task* task);
 
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);
