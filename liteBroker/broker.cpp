@@ -10,7 +10,7 @@
 #include <iostream>
 #include "uuid_v4.h"
 
-static long long get_timestamp_milliseconds();
+static long long int get_timestamp_milliseconds();
 
 Task::Task(std::string id, std::string payload, const int status, const std::string created, std::string queue) : id(std::move(id)),
 payload(std::move(payload)),
@@ -55,7 +55,7 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 
 	stmt.bind("$Id", uuid.str());
 	stmt.bind("$Payload", payload);
-	stmt.bind("$Created", get_timestamp_milliseconds());
+	stmt.bind("$Created", (int64_t)(get_timestamp_milliseconds()));
 	stmt.bind("$Queue", queue);
 
 	stmt.exec();
@@ -63,7 +63,7 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 	return BrokerResult::OK;
 }
 
-long long get_timestamp_milliseconds() {
+static long long int get_timestamp_milliseconds() {
 	using namespace std::chrono;
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }

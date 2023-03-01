@@ -1,7 +1,7 @@
 #pragma once
 
 #include <utility>
-
+#include <vector>
 #include "SQLiteCpp/SQLiteCpp.h"
 
 #ifdef _WIN32
@@ -16,7 +16,8 @@
 
 #else
 //NOT WINDOWS
-#define BROKER_API 
+#define BROKER_API extern "C" 
+#define BROKER_CLASS_EXPORT
 
 #endif
 class BROKER_CLASS_EXPORT Broker
