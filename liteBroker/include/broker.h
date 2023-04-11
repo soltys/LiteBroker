@@ -90,20 +90,34 @@ private:
 	
 };
 
+// Create Broker object
 BROKER_API BrokerResult broker_initialize(Broker** broker);
-BROKER_API BrokerResult broker_send(const Broker* broker, const char* queue, const char* payload);
-BROKER_API BrokerResult broker_receive(const Broker* broker, MessageCollection** collection);
+// Cleanup Broker object
+BROKER_API BrokerResult broker_destroy(const Broker* broker);
 
+//"Send" something to broker AKA create new row of data into DB
+BROKER_API BrokerResult broker_send(const Broker* broker, const char* queue, const char* payload);
+
+//Create object representing multiple rows
+BROKER_API BrokerResult broker_receive(const Broker* broker, MessageCollection** collection);
+//Get how many rows there is
 BROKER_API size_t broker_task_count(const MessageCollection* collection);
+//Get object representing single row details of on row
 BROKER_API Task* broker_task_at(const MessageCollection* collection, int index);
+
+//Group of methods getting single column - foreshadowing performance problem 
 BROKER_API const char* broker_task_get_id(const Task* task);
 BROKER_API const char* broker_task_get_payload(const Task* task);
 BROKER_API const char* broker_task_get_queue(const Task* task);
 BROKER_API const char* broker_task_get_created(const Task* task);
 BROKER_API int broker_task_get_status(const Task* task);
 
+//Clean-up object containing multiple rows
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
+
+
+
+
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);
-BROKER_API BrokerResult broker_destroy(const Broker* broker);
 BROKER_API const char* broker_version();
 
