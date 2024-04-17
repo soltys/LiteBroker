@@ -8,7 +8,7 @@
 #include "task_set_status.sql.hpp"
 
 #include <iostream>
-#include "uuid_v4.h"
+#include <crossguid/guid.hpp>
 
 static long long int get_timestamp_milliseconds();
 
@@ -46,9 +46,8 @@ BrokerResult broker_initialize(Broker** new_broker)
 BrokerResult broker_send(const Broker* broker, const char* queue, const char* payload)
 {
 	auto db = broker->get_db();
-
-	UUIDv4::UUIDGenerator<std::mt19937_64> uuid_generator;
-	const auto uuid = uuid_generator.getUUID();
+		
+	const auto uuid = xg::newGuid();
 
 	const auto create_task_resource = LOAD_RESOURCE(create_task_sql);
 	SQLite::Statement stmt(*db, create_task_resource.data());

@@ -7,20 +7,12 @@ source_group("EmbededFiles" REGULAR_EXPRESSION ".*sql.hpp$")
 set(PUBLIC_HEADERS "include/broker.h")
 set(BROKER_SOURCES ${liteBrokerRes} "broker.cpp" ${PUBLIC_HEADERS})
 
-# Export all Symbols by default (on Windows creates '.lib'+ '.dll').
-set ( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
-
 add_library(liteBroker SHARED ${BROKER_SOURCES})
 
-target_include_directories(liteBroker
-                           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include
-                           PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/uuid_v4
-                           )
-
+target_include_directories(liteBroker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties (liteBroker PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS})
 
-target_link_libraries(liteBroker PRIVATE SQLiteCpp) 
+target_link_libraries(liteBroker PRIVATE SQLiteCpp crossguid) 
 
 # Files to Install
 install( TARGETS liteBroker
