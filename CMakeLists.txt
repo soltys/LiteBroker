@@ -63,11 +63,11 @@ if(UNIX AND NOT APPLE)
 
   FetchContent_MakeAvailable(libuuid) 
 
-  set(LIBUUID_INCLUDE_DIR uuid::uuid)
-  set(LIBUUID_LIBRARY uuid::uuid)  
+  set(LIBUUID_INCLUDE_DIR uuid_shared)
+  set(LIBUUID_LIBRARY uuid_shared)  
 
   ##
-  # crossguid requires to have uuid/uuid.h at configure time, but uuid::uuid generates header at compile time
+  # crossguid requires to have uuid/uuid.h at configure time, but uuid_shared generates header at compile time
   # we are creating dummy file to satify configure time, and remove it before compilation step
   # to allow build system to generate header file for us 
   ## 
