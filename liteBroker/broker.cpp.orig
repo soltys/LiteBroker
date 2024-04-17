@@ -173,5 +173,9 @@ int broker_task_get_status(const Task* task)
 
 const char* broker_version()
 {
+<<<<<<< HEAD
+	return "0.0.10";
+=======
 	return PROJECT_VERSION;
+>>>>>>> d9dadb4 (configure file with version information)
 }

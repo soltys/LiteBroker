@@ -5,6 +5,7 @@
 using namespace std;
 int main()
 {
+	std::cout << "Broker Version: " << broker_version() << std::endl;
 	Broker* broker = nullptr;
 	broker_initialize(&broker);
 

@@ -4,6 +4,8 @@ embed_resources(liteBrokerRes ${EMBEDED_FILES})
 add_custom_target(liteBrokerResources SOURCES ${EMBEDED_FILES})
 source_group("EmbededFiles" REGULAR_EXPRESSION ".*sql.hpp$")
 
+configure_file("${CMAKE_SOURCE_DIR}/liteBroker/liteBroker.h.in" "${CMAKE_SOURCE_DIR}/liteBroker/liteBroker.h")
+
 set(PUBLIC_HEADERS "include/broker.h")
 set(BROKER_SOURCES ${liteBrokerRes} "broker.cpp" ${PUBLIC_HEADERS})
 

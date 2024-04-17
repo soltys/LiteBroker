@@ -6,14 +6,9 @@ cmake_minimum_required(VERSION 3.14...3.29)
 include(FetchContent)
 
 # Project Version
-set(PROJECT_VERSION 1.0.0)
+set(PROJECT_VERSION 0.0.10)
 
 project("LiteBroker" VERSION ${PROJECT_VERSION})
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx -mavx2 -march=x86-64")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx -mavx2 -march=x86-64")
-endif()
 
 if(WIN32)
 	# Export all Symbols by default (on Windows creates '.lib'+ '.dll').
