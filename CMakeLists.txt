@@ -75,12 +75,12 @@ if(UNIX AND NOT APPLE)
   file(TOUCH "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h")
 
   add_custom_target(
-    remove_uuid_header
+    remove_dummy_uuid_header
     DEPENDS "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h"
     COMMAND ${CMAKE_COMMAND} -E rm -rf "${libuuid-cmake_BINARY_DIR}/include/uuid"
   )
   # removing header target will be done before uuid_shared target
-  add_dependencies(uuid_shared remove_uuid_header)
+  add_dependencies(uuid_shared remove_dummy_uuid_header)
 
 endif()
 
