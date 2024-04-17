@@ -66,7 +66,22 @@ if(UNIX AND NOT APPLE)
   set(LIBUUID_INCLUDE_DIR uuid::uuid)
   set(LIBUUID_LIBRARY uuid::uuid)  
 
-  message("crossguid reports issue with uuid::uuid compile this way, ignore it, just call make!")
+  ##
+  # crossguid requires to have uuid/uuid.h at configure time, but uuid::uuid generates header at compile time
+  # we are creating dummy file to satify configure time, and remove it before compilation step
+  # to allow build system to generate header file for us 
+  ## 
+  file(MAKE_DIRECTORY "${libuuid-cmake_BINARY_DIR}/include/uuid")
+  file(TOUCH "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h")
+
+  add_custom_target(
+    remove_uuid_header
+    DEPENDS "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h"
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${libuuid-cmake_BINARY_DIR}/include/uuid"
+  )
+  # removing header target will be done before uuid_shared target
+  add_dependencies(uuid_shared remove_uuid_header)
+
 endif()
 
 set(CROSSGUID_TESTS OFF CACHE BOOL "" FORCE)
