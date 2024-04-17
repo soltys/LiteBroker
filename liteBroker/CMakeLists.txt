@@ -12,7 +12,7 @@ add_library(liteBroker SHARED ${BROKER_SOURCES})
 target_include_directories(liteBroker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties (liteBroker PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS})
 
-target_link_libraries(liteBroker PRIVATE SQLiteCpp crossguid) 
+target_link_libraries(liteBroker PRIVATE SQLiteCpp crossguid)
 
 # Files to Install
 install( TARGETS liteBroker
