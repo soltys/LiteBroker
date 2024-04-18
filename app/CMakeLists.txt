@@ -1,7 +1,7 @@
 ﻿# Add source to this project's executable.
-add_executable(app "main.cpp" "main.h" ${MyResources})
+add_executable(app "main.cpp" "main.h")
 
-target_link_libraries(app PRIVATE liteBroker SQLiteCpp)
+target_link_libraries(app PRIVATE litebroker SQLiteCpp)
 target_include_directories(app PRIVATE embed-resource SQLiteCpp)
 
 if(WIN32)

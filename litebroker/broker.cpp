@@ -1,6 +1,6 @@
 #define BROKER_EXPORT
 
-#include "liteBroker.h"
+#include "litebroker.h"
 #include "include/broker.h"
 
 #include "schema.sql.hpp"

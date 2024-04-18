@@ -67,13 +67,23 @@ if(UNIX AND NOT APPLE)
   # to allow build system to generate header file for us 
   ## 
   file(MAKE_DIRECTORY "${libuuid-cmake_BINARY_DIR}/include/uuid")
-  file(TOUCH "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h")
+  file(TOUCH "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h")  
 
+  
+  # We are creating target which requires dummy_marker_file.txt to exists, when evaluated
+  # this triggers add_custom_command to create dummy_marker_file.txt and remove "one-time only" uuid.h
+  # remove_dummy_uuid_header won't be called again beacuse dummy_marker_file.txt is already existing
   add_custom_target(
     remove_dummy_uuid_header
-    DEPENDS "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h"
-    COMMAND ${CMAKE_COMMAND} -E rm -rf "${libuuid-cmake_BINARY_DIR}/include/uuid"
+    DEPENDS "${libuuid-cmake_BINARY_DIR}/include/uuid/dummy_marker_file.txt"    
   )
+
+  add_custom_command(
+    OUTPUT "${libuuid-cmake_BINARY_DIR}/include/uuid/dummy_marker_file.txt"
+    COMMAND ${CMAKE_COMMAND} -E touch "${libuuid-cmake_BINARY_DIR}/include/uuid/dummy_marker_file.txt"
+    COMMAND ${CMAKE_COMMAND} -E rm -f "${libuuid-cmake_BINARY_DIR}/include/uuid/uuid.h"
+  )
+
   # removing header target will be done before uuid_shared target
   add_dependencies(uuid_shared remove_dummy_uuid_header)
 
@@ -92,7 +102,7 @@ set_target_properties(crossguid PROPERTIES FOLDER "thirdParty")
 
 #### START APP
 
-add_subdirectory("liteBroker")
+add_subdirectory("litebroker")
 add_subdirectory("app")
 
 #### END APP
