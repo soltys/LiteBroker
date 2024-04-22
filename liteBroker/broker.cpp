@@ -10,7 +10,7 @@
 #include <iostream>
 #include <crossguid/guid.hpp>
 
-static long long int get_timestamp_milliseconds();
+static int64_t get_timestamp_milliseconds();
 
 Task::Task(std::string id, std::string payload, const int status, const std::string created, std::string queue) : id(std::move(id)),
 payload(std::move(payload)),
@@ -33,7 +33,7 @@ BrokerResult broker_initialize(Broker** new_broker)
 
 		create_query.exec();
 	}
-	catch (SQLite::Exception e)
+	catch (SQLite::Exception& e)
 	{
 		std::cout << e.getErrorCode() << std::endl;
 		std::cout << e.getErrorStr() << std::endl;
@@ -62,7 +62,7 @@ BrokerResult broker_send(const Broker* broker, const char* queue, const char* pa
 	return BrokerResult::OK;
 }
 
-static long long int get_timestamp_milliseconds() {
+static int64_t get_timestamp_milliseconds() {
 	using namespace std::chrono;
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
@@ -88,7 +88,7 @@ BrokerResult broker_receive(const Broker* broker, MessageCollection** collection
 		}
 		*collection = new MessageCollection(std::move(tasks));
 	}
-	catch (SQLite::Exception e)
+	catch (SQLite::Exception& e)
 	{
 		std::cout << "exception: " << e.what() << std::endl;
 		return BrokerResult::FAILED;
@@ -118,7 +118,7 @@ BrokerResult broker_set_status(const Broker* broker, const char* id, int status)
 		stmt.bind("$Status", status);
 		stmt.exec();
 	}
-	catch (SQLite::Exception e)
+	catch (SQLite::Exception& e)
 	{
 		std::cout << "exception: " << e.what() << std::endl;
 		return BrokerResult::FAILED;
@@ -172,5 +172,5 @@ int broker_task_get_status(const Task* task)
 
 const char* broker_version()
 {
-	return "0.0.9";
+	return "0.0.10";
 }
