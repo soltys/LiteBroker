@@ -21,7 +21,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 FetchContent_Declare(
   embed-resource
   GIT_REPOSITORY https://github.com/soltys/embed-resource.git
-  GIT_TAG        a7e55562b60b76317daf9fb65ede6f8d384a5204
+  GIT_TAG        0.1.0
 )
 FetchContent_MakeAvailable(embed-resource)
 set_target_properties(embed-resource PROPERTIES FOLDER "tools")

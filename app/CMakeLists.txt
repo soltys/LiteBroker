@@ -2,7 +2,7 @@
 add_executable(app "main.cpp" "main.h")
 
 target_link_libraries(app PRIVATE litebroker SQLiteCpp)
-target_include_directories(app PRIVATE embed-resource SQLiteCpp)
+target_include_directories(app PRIVATE embed-resource SQLiteCpp litebroker)
 
 if(WIN32)
 	add_custom_command(TARGET app POST_BUILD

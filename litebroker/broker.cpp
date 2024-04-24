@@ -1,7 +1,7 @@
 #define BROKER_EXPORT
 
-#include "litebroker.h"
-#include "include/broker.h"
+#include <litebroker.h>
+#include <litebroker_internal.h>
 
 #include "schema.sql.hpp"
 #include "create_task.sql.hpp"

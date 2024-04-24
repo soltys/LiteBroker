@@ -6,15 +6,19 @@ embed_resources(LIBRARY_RESOURCES_HPP ${EMBEDED_FILES})
 add_custom_target(${LIBRARY_RESOURCES_NAME} SOURCES ${EMBEDED_FILES})
 source_group("EmbededFiles" REGULAR_EXPRESSION ".*sql.hpp$")
 
-configure_file("${CMAKE_SOURCE_DIR}/litebroker/litebroker.h.in" "${CMAKE_SOURCE_DIR}/litebroker/litebroker.h")
+configure_file("${PROJECT_SOURCE_DIR}/${LIBRARY_NAME}/litebroker_internal.h.in" "${PROJECT_BINARY_DIR}/${LIBRARY_NAME}/litebroker_internal.h")
 
-set(PUBLIC_HEADERS "include/broker.h")
+set(PUBLIC_HEADERS "include/litebroker.h")
 set(BROKER_SOURCES ${LIBRARY_RESOURCES_HPP} "broker.cpp" ${PUBLIC_HEADERS})
 
 add_library(${LIBRARY_NAME} SHARED ${BROKER_SOURCES})
 
-target_include_directories(${LIBRARY_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set_target_properties (${LIBRARY_NAME} PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS})
+target_include_directories(${LIBRARY_NAME} 
+	PUBLIC ${PROJECT_SOURCE_DIR}/${LIBRARY_NAME}/include 
+	PRIVATE ${PROJECT_BINARY_DIR}/${LIBRARY_NAME})
+set_target_properties (${LIBRARY_NAME} 
+	PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS}
+	COMPILE_DEFINITIONS "DLL_EXPORT")
 
 target_link_libraries(${LIBRARY_NAME} PRIVATE SQLiteCpp crossguid)
 

@@ -1,8 +1,7 @@
 ﻿
 #include "main.h"
-#include "broker.h"
+#include <litebroker.h>
 
-using namespace std;
 int main()
 {
 	std::cout << "Broker Version: " << broker_version() << std::endl;

@@ -115,9 +115,6 @@ BROKER_API int broker_task_get_status(const Task* task);
 //Clean-up object containing multiple rows
 BROKER_API BrokerResult broker_finalize(const MessageCollection* collection);
 
-
-
-
 BROKER_API BrokerResult broker_set_status(const Broker* broker, const char* id, int status);
 BROKER_API const char* broker_version();
 
