@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <vector>
-#include "SQLiteCpp/SQLiteCpp.h"
+#include <SQLiteCpp/SQLiteCpp.h>
 
 #ifdef _WIN32
 

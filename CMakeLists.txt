@@ -19,12 +19,12 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #### START TOOLS
 FetchContent_Declare(
-  embed-resource
+  embed_resource
   GIT_REPOSITORY https://github.com/soltys/embed-resource.git
-  GIT_TAG        0.1.0
+  GIT_TAG        0.2.0
 )
-FetchContent_MakeAvailable(embed-resource)
-set_target_properties(embed-resource PROPERTIES FOLDER "tools")
+FetchContent_MakeAvailable(embed_resource)
+set_target_properties(embed_resource PROPERTIES FOLDER "tools")
 #### END TOOLS
 
 #### START Third Party
