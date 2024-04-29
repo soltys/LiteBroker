@@ -4,8 +4,8 @@ set(LIBRARY_RESOURCES_NAME ${LIBRARY_NAME}-resources)
 set(EMBEDED_FILES "schema.sql" "create_task.sql" "receive_tasks.sql" "task_set_status.sql")
 embed_resources(LIBRARY_RESOURCES_HPP FILES ${EMBEDED_FILES} CONTENT_AS_COMMENT)
 add_custom_target(${LIBRARY_RESOURCES_NAME} SOURCES ${EMBEDED_FILES})
-source_group("EmbededFiles" REGULAR_EXPRESSION ".*sql.hpp$")
-
+set_target_properties(${LIBRARY_RESOURCES_NAME}  PROPERTIES
+						PROJECT_LABEL "LiteBroker Library Resources" )
 configure_file("${PROJECT_SOURCE_DIR}/${LIBRARY_NAME}/litebroker_internal.h.in" "${PROJECT_BINARY_DIR}/${LIBRARY_NAME}/litebroker_internal.h")
 
 set(PUBLIC_HEADERS "include/litebroker.h")
@@ -26,7 +26,7 @@ install( TARGETS ${LIBRARY_NAME}
 
 	
 set_target_properties(${LIBRARY_NAME}  PROPERTIES
-						PROJECT_LABEL "Lite Broker" 
+						PROJECT_LABEL "LiteBroker Library" 
 						CXX_STANDARD 17
 						CXX_STANDARD_REQUIRED YES
 						CXX_EXTENSIONS Off

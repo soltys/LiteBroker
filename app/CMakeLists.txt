@@ -1,8 +1,13 @@
-﻿# Add source to this project's executable.
-add_executable(app "main.cpp" "main.h")
+﻿add_executable(app "main.cpp" "main.h")
 
 target_link_libraries(app PRIVATE litebroker SQLiteCpp)
 target_include_directories(app PRIVATE embed-resource SQLiteCpp litebroker)
+
+set_target_properties(app PROPERTIES
+						PROJECT_LABEL "LiteBroker Application" 
+						CXX_STANDARD 17
+						CXX_STANDARD_REQUIRED YES
+						CXX_EXTENSIONS Off)
 
 if(WIN32)
 	add_custom_command(TARGET app POST_BUILD
@@ -10,7 +15,3 @@ if(WIN32)
 	  COMMAND_EXPAND_LISTS
 	  )
 ENDIF()
-
-if(CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET app PROPERTY CXX_STANDARD 20)
-endif()
